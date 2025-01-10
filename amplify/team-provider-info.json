@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-snakegame-dev-93781-authRole",
+      "UnauthRoleArn": "arn:aws:iam::767397887490:role/amplify-snakegame-dev-93781-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::767397887490:role/amplify-snakegame-dev-93781-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-snakegame-dev-93781-deployment",
+      "UnauthRoleName": "amplify-snakegame-dev-93781-unauthRole",
+      "StackName": "amplify-snakegame-dev-93781",
+      "StackId": "arn:aws:cloudformation:us-east-1:767397887490:stack/amplify-snakegame-dev-93781/260a61b0-cf07-11ef-945a-0ebcd43315ff",
+      "AmplifyAppId": "d2ho53ic4f215p"
+    },
+    "categories": {
+      "auth": {
+        "snakegame34cbbce6": {}
+      }
+    }
+  }
+}
