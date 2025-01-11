@@ -2,9 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import * as faceDetection from '@tensorflow-models/face-detection';
 import '@tensorflow/tfjs-core';
 import '@tensorflow/tfjs-backend-webgl';
-import { API, graphqlOperation, Auth } from 'aws-amplify';
-import { createUserScore, updateUserScore } from './graphql/mutations';
-import { getUserScore } from './graphql/queries';
+
 const GRID_SIZE = 20;
 const CELL_SIZE = 25;
 const INITIAL_SPEED = 150;
@@ -100,8 +98,7 @@ const SnakeGame = () => {
   const [deathDirection, setDeathDirection] = useState(null);
   const [deathLength, setDeathLength] = useState(null); // Add this state
   const [deathSnake, setDeathSnake] = useState(null);  // Add this state
-  const [highestScore, setHighestScore] = useState(0);
-  const [currentScore, setCurrentScore] = useState(0);
+
   // Initialize face detection
   useEffect(() => {
     const initializeDetector = async () => {
@@ -113,56 +110,7 @@ const SnakeGame = () => {
     };
     initializeDetector();
   }, []);
-  useEffect(() => {
-    const fetchHighScore = async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser();
-        const userId = user.attributes.sub;
-  
-        const result = await API.graphql(
-          graphqlOperation(getUserScore, {
-            userId: userId,
-            gameName: 'SnakeGame',
-          })
-        );
-  
-        if (result.data.getUserScore) {
-          setHighestScore(result.data.getUserScore.highestScore);
-        }
-      } catch (error) {
-        console.error('Error fetching high score:', error);
-      }
-    };
-  
-    fetchHighScore();
-  }, []);
-  useEffect(() => {
-    if (!gameOver) return;
-  
-    const saveHighScore = async () => {
-      if (score > highestScore) {
-        try {
-          const user = await Auth.currentAuthenticatedUser();
-          const userId = user.attributes.sub;
-  
-          const input = {
-            userId: userId,
-            gameName: 'SnakeGame',
-            highestScore: score,
-          };
-  
-          await API.graphql(graphqlOperation(createUserScore, { input }));
-          setHighestScore(score); // Update the UI after saving
-          console.log('High score saved:', score);
-        } catch (error) {
-          console.error('Error saving high score:', error);
-        }
-      }
-    };
-  
-    saveHighScore();
-  }, [gameOver, score, highestScore]);
-  
+
   // Generate random food position
   const generateFood = useCallback(() => {
     const newFood = {
@@ -684,11 +632,7 @@ const SnakeGame = () => {
 
   return (
     <div style={styles.container}>
-      <div style={styles.score}>
-  <p>Current Score: {score}</p>
-  <p>Highest Score: {highestScore}</p>
-</div>
-
+      <div style={styles.score}>Score: {score}</div>
       <button 
         style={styles.restartButton}
         onClick={() => {
